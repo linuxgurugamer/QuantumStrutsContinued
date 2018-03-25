@@ -1,0 +1,15 @@
+﻿{
+  "NAME": "QuantumStrutsContinued",
+  "URL": "http://ksp-avc.cybutek.net/version.php?id=398",
+  "VERSION": {
+    "MAJOR": 1,
+    "MINOR": 7,
+    "PATCH": 3,
+    "BUILD": 0
+  },
+  "KSP_VERSION": {
+    "MAJOR": 1,
+    "MINOR": 4,
+    "PATCH": 1
+  }
+}

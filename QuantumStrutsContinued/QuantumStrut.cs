@@ -29,7 +29,7 @@
 
 using KSP;
 using System;
-using ToadicusTools;
+//using ToadicusTools;
 using UnityEngine;
 
 namespace QuantumStrut
@@ -66,7 +66,7 @@ namespace QuantumStrut
 		public float EndSize = 0.015f;
 
 		[KSPField(
-			isPersistant = false, guiActiveEditor = true,
+			isPersistant = true, guiActiveEditor = true,
 			guiName = "Max. Strut Length", guiUnits = "m", guiFormat = "F0"
 		)]
 		[UI_FloatRange(minValue = 2f, maxValue = 50f, stepIncrement = 2f)]

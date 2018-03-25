@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumStrutsContinued", "QuantumStrutsContinued\QuantumStrutsContinued.csproj", "{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{8F137933-83CE-49E5-9F7A-2154426EB740}"
+	ProjectSection(SolutionItems) = preProject
+		buildRelease.bat = buildRelease.bat
+		Changelog.txt = Changelog.txt
+		deploy.bat = deploy.bat
+		jenkins.txt = jenkins.txt
+		QuantumStrutsContinued.version = QuantumStrutsContinued.version
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_linux|Any CPU = Debug_linux|Any CPU
+		Debug_win|Any CPU = Debug_win|Any CPU
+		Release_linux|Any CPU = Release_linux|Any CPU
+		Release_win|Any CPU = Release_win|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}.Debug_linux|Any CPU.ActiveCfg = Debug_linux|Any CPU
+		{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}.Debug_linux|Any CPU.Build.0 = Debug_linux|Any CPU
+		{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}.Debug_win|Any CPU.ActiveCfg = Debug_win|Any CPU
+		{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}.Debug_win|Any CPU.Build.0 = Debug_win|Any CPU
+		{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}.Release_linux|Any CPU.ActiveCfg = Release_linux|Any CPU
+		{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}.Release_linux|Any CPU.Build.0 = Release_linux|Any CPU
+		{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}.Release_win|Any CPU.ActiveCfg = Release_win|Any CPU
+		{D6EC2150-27A5-4CB2-ACF9-C53FF7754A77}.Release_win|Any CPU.Build.0 = Release_win|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A865D11D-8221-433A-A219-1CA5F5F9EC3B}
+	EndGlobalSection
+EndGlobal
