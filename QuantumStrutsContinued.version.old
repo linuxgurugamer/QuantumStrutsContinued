@@ -1,4 +1,4 @@
-{
+﻿{
   "NAME": "QuantumStrutsContinued",
   "URL": "http://ksp.spacetux.net/avc/QuantumStrutsContinued",
   "DOWNLOAD": "http://spacedock.info/mod/301/QuantumStrutsContinued",
@@ -21,5 +21,10 @@
     "MAJOR": 1,
     "MINOR": 5,
     "PATCH": 1
+  },
+  "KSP_VERSION_MAX": {
+    "MAJOR": 1,
+    "MINOR": 5,
+    "PATCH": 99
   }
 }
