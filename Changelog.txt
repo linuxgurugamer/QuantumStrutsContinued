@@ -17,3 +17,6 @@
 
 1.7.3.2
 	Version bump for 1.5 rebuild
+
+1.7.4
+	Updated for deprecated part in 1.7
