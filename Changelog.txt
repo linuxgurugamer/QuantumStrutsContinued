@@ -20,3 +20,7 @@
 
 1.7.4
 	Updated for deprecated part in 1.7
+
+1.7.4.1
+	Added README
+	Fixed BashCopyTextures.sh for when there are spaces in the path

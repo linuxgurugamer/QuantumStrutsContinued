@@ -14,7 +14,7 @@ echo "Press return to continue"
 read yn
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-[ ! -d $DIR/Squad ] && mkdir $DIR/Squad
+[ ! -d "$DIR/Squad" ] && mkdir $DIR/Squad
 cd $DIR/Squad
 
 mkdir linearRCS_v1
