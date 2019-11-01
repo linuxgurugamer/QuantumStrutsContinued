@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>QuantumStrutsContinued</RootNamespace>
     <AssemblyName>QuantumStrutsContinued</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_win|AnyCPU' ">
@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
@@ -36,6 +37,7 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
@@ -55,6 +57,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
     <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
     <CustomCommands>
@@ -71,6 +74,7 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
     <CustomCommands>
       <CustomCommands>
         <Command>
@@ -89,6 +93,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AssemblyVersion.tt</DependentUpon>
     </Compile>
+    <Compile Include="InstallChecker.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="QuantumStrut.cs" />
     <Compile Include="Strut.cs" />
