@@ -24,3 +24,8 @@
 1.7.4.1
 	Added README
 	Fixed BashCopyTextures.sh for when there are spaces in the path
+
+1.7.5
+	Added InstallChecker
+	Updated AssemblyVersion.tt
+	Updated for KSP 1.8
