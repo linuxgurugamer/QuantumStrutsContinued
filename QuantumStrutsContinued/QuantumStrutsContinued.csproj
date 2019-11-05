@@ -94,6 +94,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AssemblyVersion.tt</DependentUpon>
     </Compile>
+    <Compile Include="InstallChecker.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="QuantumStrut.cs" />
     <Compile Include="Strut.cs" />

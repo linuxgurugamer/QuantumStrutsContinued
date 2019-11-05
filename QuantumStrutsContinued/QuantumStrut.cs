@@ -55,7 +55,7 @@ namespace QuantumStrut
 		[KSPField(isPersistant = false)]
 		public Vector3 Dir = new Vector3(0, 1, 0);
 		[KSPField(isPersistant = false)]
-		public string Material = "Particles/Additive";
+		public string Material = "Legacy Shaders/Particles/Additive";
 		[KSPField(isPersistant = false)]
 		public Vector3 StartColor = Vector3.zero;
 		[KSPField(isPersistant = false)]
@@ -172,6 +172,7 @@ namespace QuantumStrut
 
 		public override void OnStart(PartModule.StartState state)
 		{
+            Debug.Log("QuantumStrut.OnStart");
 			try
 			{
 				print("Material: {0}", Material);
@@ -188,7 +189,7 @@ namespace QuantumStrut
 			endColor = Vector3toColor(EndColor);
 
 			if (!Util.isValid(LaserMaterial))
-				LaserMaterial = new Material(Shader.Find("Particles/Additive"));
+				LaserMaterial = new Material(Shader.Find("Legacy Shaders/Particles/Additive"));
 			
 			switch (state)
 			{
@@ -280,13 +281,13 @@ namespace QuantumStrut
 		{
 			if (HighLogic.LoadedSceneIsEditor)
 			{
-				Logging.PostDebugMessage(this, "Checking bailing out: in the editor!");
+				//Logging.PostDebugMessage(this, "Checking bailing out: in the editor!");
 				return;
 			}
 
 			if (!isEnabled)
 			{
-				Logging.PostDebugMessage(this, "Destroying strut.");
+				//Logging.PostDebugMessage(this, "Destroying strut.");
 
 				strut.Destroy();
 				strut = null;

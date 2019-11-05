@@ -29,3 +29,9 @@
 	Added InstallChecker
 	Updated AssemblyVersion.tt
 	Updated for KSP 1.8
+
+1.7.5.1
+	Fixed shader issue in 1.8
+	Changed part configs to use current part model instead of deprecated part model
+	Depreciated the QuantumStrut part, will still be available to legacy craft
+	Replaced QuantumStrut part with QuantumStrut2 part, using models from KAS Legacy
