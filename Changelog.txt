@@ -35,3 +35,6 @@
 	Changed part configs to use current part model instead of deprecated part model
 	Depreciated the QuantumStrut part, will still be available to legacy craft
 	Replaced QuantumStrut part with QuantumStrut2 part, using models from KAS Legacy
+
+1.7.5.2
+	Deleted README.md file, not needed anymore.  Last release changed the part to use available parts 
