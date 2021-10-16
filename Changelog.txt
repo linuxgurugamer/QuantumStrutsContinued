@@ -38,3 +38,7 @@
 
 1.7.5.2
 	Deleted README.md file, not needed anymore.  Last release changed the part to use available parts 
+
+1.7.5.3
+	Added AssemblyFileVersion
+	Updated version file for 1.12
