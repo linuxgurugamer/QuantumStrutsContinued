@@ -42,3 +42,6 @@
 1.7.5.3
 	Added AssemblyFileVersion
 	Updated version file for 1.12
+
+1.7.5.4
+	Added Restock Whitelist
