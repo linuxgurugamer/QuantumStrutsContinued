@@ -1,6 +1,6 @@
 {
   "NAME": "QuantumStrutsContinued",
-  "URL": "http://ksp.spacetux.net/avc/QuantumStrutsContinued",
+  "URL": "https://raw.githubusercontent.com/linuxgurugamer/QuantumStrutsContinued/refs/heads/master/QuantumStrutsContinued.version",
   "DOWNLOAD": "http://spacedock.info/mod/301/QuantumStrutsContinued",
   "GITHUB": {
     "USERNAME": "linuxgurugamer",
@@ -9,8 +9,8 @@
   "VERSION": {
     "MAJOR": 1,
     "MINOR": 7,
-    "PATCH": 5,
-    "BUILD": 3
+    "PATCH": 6,
+    "BUILD": 0
   },
   "KSP_VERSION": {
     "MAJOR": 1,
@@ -21,5 +21,10 @@
     "MAJOR": 1,
     "MINOR": 12,
     "PATCH": 0
+  },
+  "KSP_VERSION_MAX": {
+    "MAJOR": 1,
+    "MINOR": 12,
+    "PATCH": 99
   }
 }

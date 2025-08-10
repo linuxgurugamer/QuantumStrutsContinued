@@ -45,3 +45,12 @@
 
 1.7.5.4
 	Added Restock Whitelist
+
+1.7.5.5
+	Added strengthAdjustment and torqueAdjustment settings
+		Power consumption is increased by the the strengthAdjustment and TorqueAdjustment multiplied together
+
+1.7.6
+	Thanks to Discord user @BillNye for this:
+		Fixed memory leak which left behind phantom struts
+	Updated version file to use github for new version info

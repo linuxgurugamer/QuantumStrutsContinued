@@ -27,389 +27,412 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using KSP;
-using System;
 //using ToadicusTools;
 using UnityEngine;
 
 namespace QuantumStrut
 {
-	public class QuantumStrut : PartModule
-	{
-		public static Material LaserMaterial;
-		Strut strut = null;
-		GameObject lineObj;
-		LineRenderer lr;
-		int I = 0;
+    public class QuantumStrut : PartModule
+    {
+        public static Material LaserMaterial;
+        Strut strut = null;
+        GameObject lineObj;
+        LineRenderer lr;
+        int I = 0;
 
-		#region Fields
+        #region Fields
 
-		[KSPField(isPersistant = true)]
-		public bool IsEnabled = true;
-		[KSPField(isPersistant = false)]
-		public float PowerConsumption = 0;
-		[KSPField(isPersistant = false)]
-		public string TransformName = "";
-		[KSPField(isPersistant = false)]
-		public Vector3 Start = new Vector3(0, 0, 0);
-		[KSPField(isPersistant = false)]
-		public Vector3 Dir = new Vector3(0, 1, 0);
-		[KSPField(isPersistant = false)]
-		public string Material = "Legacy Shaders/Particles/Additive";
-		[KSPField(isPersistant = false)]
-		public Vector3 StartColor = Vector3.zero;
-		[KSPField(isPersistant = false)]
-		public Vector3 EndColor = Vector3.zero;
-		[KSPField(isPersistant = false)]
-		public float StartSize = 0.03f;
-		[KSPField(isPersistant = false)]
-		public float EndSize = 0.015f;
+        [KSPField(isPersistant = true)]
+        public bool IsEnabled = true;
+        [KSPField(isPersistant = false)]
+        public float PowerConsumption = 0;
+        [KSPField(isPersistant = false)]
+        public string TransformName = "";
+        [KSPField(isPersistant = false)]
+        public Vector3 Start = new Vector3(0, 0, 0);
+        [KSPField(isPersistant = false)]
+        public Vector3 Dir = new Vector3(0, 1, 0);
+        [KSPField(isPersistant = false)]
+        public string Material = "Legacy Shaders/Particles/Additive";
+        [KSPField(isPersistant = false)]
+        public Vector3 StartColor = Vector3.zero;
+        [KSPField(isPersistant = false)]
+        public Vector3 EndColor = Vector3.zero;
+        [KSPField(isPersistant = false)]
+        public float StartSize = 0.03f;
+        [KSPField(isPersistant = false)]
+        public float EndSize = 0.015f;
 
-		[KSPField(
-			isPersistant = true, guiActiveEditor = true,
-			guiName = "Max. Strut Length", guiUnits = "m", guiFormat = "F0"
-		)]
-		[UI_FloatRange(minValue = 2f, maxValue = 50f, stepIncrement = 2f)]
-		public float MaxStrutLength = 10f;
+        [KSPField(
+            isPersistant = true, guiActiveEditor = true,
+            guiName = "Max. Strut Length", guiUnits = "m", guiFormat = "F0"
+        )]
+        [UI_FloatRange(minValue = 2f, maxValue = 50f, stepIncrement = 2f)]
+        public float MaxStrutLength = 10f;
 
-		#endregion
+        [KSPField(isPersistant = true, guiName = "Strength Adjustment")]
+        [UI_FloatRange(minValue = 1f, maxValue = 5f, stepIncrement = 0.1f)]
+        public float strengthAdjustment = 1f;
 
-		#region Actions
+        [KSPField(isPersistant = true, guiName = "Torque Adjustment")]
+        [UI_FloatRange(minValue = 1f, maxValue = 5f, stepIncrement = 0.1f)]
+        public float torqueAdjustment = 1f;
+        #endregion
 
-		[KSPAction("Toggle")]
-		public void ToggleStrut(KSPActionParam param)
-		{
-			IsEnabled = !IsEnabled;
-			CheckHit();
-		}
+        #region Actions
 
-		[KSPAction("Activate")]
-		public void ActivateStrut(KSPActionParam param)
-		{
-			this.ActivateStrut();
-		}
+        [KSPAction("Toggle")]
+        public void ToggleStrut(KSPActionParam param)
+        {
+            IsEnabled = !IsEnabled;
+            CheckHit();
+        }
 
-		[KSPAction("Deactivate")]
-		public void DeactivateStrut(KSPActionParam param)
-		{
-			this.DeactivateStrut();
-		}
+        [KSPAction("Activate")]
+        public void ActivateStrut(KSPActionParam param)
+        {
+            this.ActivateStrut();
+        }
 
-		#endregion
+        [KSPAction("Deactivate")]
+        public void DeactivateStrut(KSPActionParam param)
+        {
+            this.DeactivateStrut();
+        }
 
-		#region Events
+        #endregion
 
-		[KSPEvent(guiActive = true, guiName = "Activate", active = true, guiActiveUnfocused = true, unfocusedRange = 2f)]
-		public void ActivateStrut()
-		{
-			IsEnabled = true;
-			CheckHit();
-			this.Events["ActivateStrut"].guiActiveEditor = false;
-			this.Events["DeactivateStrut"].guiActiveEditor = true;
-		}
+        #region Events
 
-		[KSPEvent(guiActive = true, guiName = "Deactivate", active = false, guiActiveUnfocused = true, unfocusedRange = 2f)]
-		public void DeactivateStrut()
-		{
-			IsEnabled = false;
-			CheckHit();
-			this.Events["ActivateStrut"].guiActiveEditor = true;
-			this.Events["DeactivateStrut"].guiActiveEditor = false;
-		}
+        [KSPEvent(guiActive = true, guiName = "Activate", active = true, guiActiveUnfocused = true, unfocusedRange = 2f)]
+        public void ActivateStrut()
+        {
+            IsEnabled = true;
+            CheckHit();
+            this.Events["ActivateStrut"].guiActiveEditor = false;
+            this.Events["DeactivateStrut"].guiActiveEditor = true;
+        }
 
-		#endregion
+        [KSPEvent(guiActive = true, guiName = "Deactivate", active = false, guiActiveUnfocused = true, unfocusedRange = 2f)]
+        public void DeactivateStrut()
+        {
+            IsEnabled = false;
+            CheckHit();
+            this.Events["ActivateStrut"].guiActiveEditor = true;
+            this.Events["DeactivateStrut"].guiActiveEditor = false;
+        }
 
-		public Material material = null;
-		public Color startColor = Color.white;
-		public Color endColor = Color.white;
+        #endregion
 
-		public Color Vector3toColor(Vector3 vec)
-		{
-			return new Color(vec.x / 255, vec.y / 255, vec.z / 255);
-		}
+        public Material material = null;
+        public Color startColor = Color.white;
+        public Color endColor = Color.white;
 
-		Transform getTransform()
-		{
-			if (TransformName == "")
-				return part.transform;
-			else
-				return part.FindModelTransform(TransformName);
-		}
+        int resourceID; 
 
-		public void print(object body, params object[] args)
-		{
-			string final = body.ToString();
-			for (int I = 0; I < args.Length; I++)
-			{
-				final = final.Replace("{" + I + "}", args[I].ToString());
-			}
-			MonoBehaviour.print("[AutoStrut] " + final);
-		}
+        public Color Vector3toColor(Vector3 vec)
+        {
+            return new Color(vec.x / 255, vec.y / 255, vec.z / 255);
+        }
 
-		public override void OnLoad(ConfigNode node)
-		{
-			base.OnLoad(node);
-		}
+        Transform getTransform()
+        {
+            if (TransformName == "")
+                return part.transform;
+            else
+                return part.FindModelTransform(TransformName);
+        }
 
-		public override void OnActive()
-		{
-			InitLaser();
+        public void print(object body, params object[] args)
+        {
+            string final = body.ToString();
+            for (int I = 0; I < args.Length; I++)
+            {
+                final = final.Replace("{" + I + "}", args[I].ToString());
+            }
+            MonoBehaviour.print("[AutoStrut] " + final);
+        }
 
-			base.OnActive();
-		}
+        public override void OnLoad(ConfigNode node)
+        {
+            base.OnLoad(node);
+            resourceID = PartResourceLibrary.Instance.GetDefinition("ElectricCharge").id;
+        }
 
-		public override void OnInactive()
-		{
-			DestroyLaser();
+        public override void OnActive()
+        {
+            InitLaser();
 
-			base.OnInactive();
-		}
+            base.OnActive();
+        }
 
-		public override string GetInfo()
-		{
-			return "Requires:\n- ElectricCharge (" + PowerConsumption + "/s.)\n\n Costs 5 to create strut.";
-		}
+        public override void OnInactive()
+        {
+            DestroyLaser();
 
-		public override void OnStart(PartModule.StartState state)
-		{
+            base.OnInactive();
+        }
+
+        public override string GetInfo()
+        {
+            return "Requires:\n- ElectricCharge (" + PowerConsumption * strengthAdjustment * torqueAdjustment + "/s.)\n\n Costs 5 to create strut.";
+        }
+
+        public override void OnStart(PartModule.StartState state)
+        {
             Debug.Log("QuantumStrut.OnStart");
-			try
-			{
-				print("Material: {0}", Material);
-				material = new Material(Shader.Find(Material.Trim()));
-			}
-			catch
-			{
-				material = null;
-			}
+            try
+            {
+                print("Material: {0}", Material);
+                material = new Material(Shader.Find(Material.Trim()));
+            }
+            catch
+            {
+                material = null;
+            }
 
-			base.stagingEnabled = false;
+            base.stagingEnabled = false;
 
-			startColor = Vector3toColor(StartColor);
-			endColor = Vector3toColor(EndColor);
+            startColor = Vector3toColor(StartColor);
+            endColor = Vector3toColor(EndColor);
 
-			if (!Util.isValid(LaserMaterial))
-				LaserMaterial = new Material(Shader.Find("Legacy Shaders/Particles/Additive"));
-			
-			switch (state)
-			{
-				case StartState.Editor:
-					InitLaser();
-					break;
-				case StartState.Docked:
-					CheckHit();
-					DestroyLaser();
-					break;
-				default:
-					DestroyLaser();
-					break;
-			}
+            if (!Util.isValid(LaserMaterial))
+                LaserMaterial = new Material(Shader.Find("Legacy Shaders/Particles/Additive"));
 
-			base.OnStart(state);
-		}
+            switch (state)
+            {
+                case StartState.Editor:
+                    InitLaser();
+                    break;
+                case StartState.Docked:
+                    CheckHit();
+                    DestroyLaser();
+                    break;
+                default:
+                    DestroyLaser();
+                    break;
+            }
 
-		public override bool IsStageable()
-		{
-			return false;
-		}
+            base.OnStart(state);
+        }
 
-		public void Update()
-		{
-			if (strut != null && !strut.isDestroyed)
-			{
-				if (PowerConsumption == 0 || (Util.GetEnergy(part.vessel) > PowerConsumption * TimeWarp.fixedDeltaTime && part.RequestResource(
-					"ElectricCharge",
-					PowerConsumption * TimeWarp.fixedDeltaTime
-				) > 0))
-				{
-					strut.Update();
-				}
-				else
-				{
-					strut.Destroy();
-				}
-			}
-		}
+        public override bool IsStageable()
+        {
+            return false;
+        }
 
-		public void FixedUpdate()
-		{
-			Events["ActivateStrut"].guiActiveEditor = Events["ActivateStrut"].active = !IsEnabled;
-			Events["DeactivateStrut"].guiActiveEditor = Events["DeactivateStrut"].active = IsEnabled;
+        public void Update()
+        {
+            if (strut != null && !strut.isDestroyed)
+            {
+                var powerConsumption = PowerConsumption * strengthAdjustment * torqueAdjustment * TimeWarp.fixedDeltaTime;
 
-			if (IsEnabled)
-			{
-				I = I + 1 % 255;
+                int resourceID = PartResourceLibrary.Instance.GetDefinition("ElectricCharge").id;
+                double transferred = part.TransferResource(resourceID, powerConsumption);
 
-				if (strut == null || strut.isDestroyed)
-				{
-					if ((I % 10) == 0)
-					{
-						CheckHit();
-					}
-				}
-			}
-			else
-			{
-				if (strut != null)
-				{
-					strut.Destroy();
-					strut = null;
-				}
-			}
+                if (powerConsumption == 0 || (Util.GetEnergy(part.vessel) > powerConsumption && powerConsumption == transferred))
+                {
+                    strut.Update();
+                }
+                else
+                {
+                    strut.Destroy();
+                }
+            }
+        }
 
-			base.OnUpdate();
-		}
+        public void FixedUpdate()
+        {
+            Events["ActivateStrut"].guiActiveEditor = Events["ActivateStrut"].active = !IsEnabled;
+            Events["DeactivateStrut"].guiActiveEditor = Events["DeactivateStrut"].active = IsEnabled;
 
-		public void OnGUI()
-		{
-			if (HighLogic.LoadedSceneIsEditor && Util.isValid(part))
-			{
-				this.DrawBuildOverlay();
-			}
-			else
-			{
-				DestroyLaser();
-			}
-		}
+            if (IsEnabled)
+            {
+                I = I + 1 % 255;
 
-		public void OnDestroy()
-		{
-			DestroyLaser();
-		}
+                if (strut == null || strut.isDestroyed)
+                {
+                    if ((I % 10) == 0)
+                    {
+                        CheckHit();
+                    }
+                }
+            }
+            else
+            {
+                if (strut != null)
+                {
+                    strut.Destroy();
+                    strut = null;
+                }
+            }
 
-		void CheckHit()
-		{
-			if (HighLogic.LoadedSceneIsEditor)
-			{
-				//Logging.PostDebugMessage(this, "Checking bailing out: in the editor!");
-				return;
-			}
+            base.OnUpdate();
+        }
 
-			if (!isEnabled)
-			{
-				//Logging.PostDebugMessage(this, "Destroying strut.");
+        public void OnGUI()
+        {
+            if (HighLogic.LoadedSceneIsEditor && Util.isValid(part))
+            {
+                this.DrawBuildOverlay();
+            }
+            else
+            {
+                DestroyLaser();
+            }
+        }
 
-				strut.Destroy();
-				strut = null;
-				return;
-			}
+        public void OnDestroy()
+        {
+            if (strut != null)
+                strut.Destroy();
 
-			Logging.PostDebugMessage(this, "Checking for ray hit.");
+            DestroyLaser();
+        }
 
-			Logging.PostDebugMessage(this, "Enabled, continuing.");
+        void CheckHit()
+        {
+            if (HighLogic.LoadedSceneIsEditor)
+            {
+                //Logging.PostDebugMessage(this, "Checking bailing out: in the editor!");
+                return;
+            }
 
-			if (strut == null || strut.isDestroyed)
-			{
-				Logging.PostDebugMessage(this, "strut is {0}", strut == null ? "null" : strut.isDestroyed.ToString());
+            if (!isEnabled)
+            {
+                //Logging.PostDebugMessage(this, "Destroying strut.");
 
-				Vector3 dir = getTransform().TransformDirection(Dir);
-				Vector3 start = getTransform().TransformPoint(Start);
+                strut.Destroy();
+                strut = null;
+                return;
+            }
 
-				Logging.PostDebugMessage(this, "Got transforms.  Checking for raycast hit.");
+            Logging.PostDebugMessage(this, "Checking for ray hit.");
 
-				UnityEngine.RaycastHit info = new RaycastHit();
-				bool hit = Physics.Raycast(new UnityEngine.Ray(start + (dir * 0.05f), dir), out info, MaxStrutLength);
+            Logging.PostDebugMessage(this, "Enabled, continuing.");
 
-				if (hit)
-				{
-					Logging.PostDebugMessage(this, "Found raycast hit.  Fetching target part.");
+            if (strut == null || strut.isDestroyed)
+            {
+                Logging.PostDebugMessage(this, "strut is {0}", strut == null ? "null" : strut.isDestroyed.ToString());
 
-					Part targetPart = Util.partFromRaycast(info);
+                Vector3 dir = getTransform().TransformDirection(Dir);
+                Vector3 start = getTransform().TransformPoint(Start);
 
-					Logging.PostDebugMessage(this,
-						"Found target part {0} on {1}.",
-						targetPart.partName,
-						targetPart.vessel == null ? "null vessel" : targetPart.vessel.vesselName
-					);
+                Logging.PostDebugMessage(this, "Got transforms.  Checking for raycast hit.");
 
-					if (
-						targetPart && vessel.parts.Contains(targetPart) &&
-						Util.GetEnergy(part.vessel) > 5 * TimeWarp.fixedDeltaTime
-					)
-					{
-						Logging.PostDebugMessage(this, "Target part is in our vessel and we have the energy to continue.");
+                UnityEngine.RaycastHit info = new RaycastHit();
+                bool hit = Physics.Raycast(new UnityEngine.Ray(start + (dir * 0.05f), dir), out info, MaxStrutLength);
 
-						strut = new Strut(
-							part,
-							targetPart,
-							targetPart.transform.InverseTransformPoint(info.point),
-							getTransform()
-						);
+                if (hit)
+                {
+                    Logging.PostDebugMessage(this, "Found raycast hit.  Fetching target part.");
 
-						Logging.PostDebugMessage(this, "Built a new strut, setting material, colors, and sizes.");
+                    Part targetPart = Util.partFromRaycast(info);
 
-						strut.Material = material;
-						strut.StartColor = startColor;
-						strut.EndColor = endColor;
-						strut.StartSize = StartSize;
-						strut.EndSize = EndSize;
+                    Logging.PostDebugMessage(this,
+                        "Found target part {0} on {1}.",
+                        targetPart.partName,
+                        targetPart.vessel == null ? "null vessel" : targetPart.vessel.vesselName
+                    );
 
-						Logging.PostDebugMessage(this, "Strut all done!");
-					}
-				}
-			}
-		}
+                    if (
+                        targetPart && vessel.parts.Contains(targetPart) &&
+                        Util.GetEnergy(part.vessel) > 5 * TimeWarp.fixedDeltaTime
+                    )
+                    {
+                        Logging.PostDebugMessage(this, "Target part is in our vessel and we have the energy to continue.");
 
-		void InitLaser()
-		{
-			if (!Util.isValid(lr))
-			{
-				lineObj = new GameObject();
+                        strut = new Strut(
+                            part,
+                            targetPart,
+                            targetPart.transform.InverseTransformPoint(info.point),
+                            getTransform(), strengthAdjustment, torqueAdjustment
+                        );
 
-				lr = lineObj.AddComponent<LineRenderer>();
-				lr.useWorldSpace = false;
+                        Logging.PostDebugMessage(this, "Built a new strut, setting material, colors, and sizes.");
 
-				lr.material = material;
-				lr.SetColors(startColor, endColor);
-				lr.SetWidth(StartSize, EndSize);
+                        strut.Material = material;
+                        strut.StartColor = startColor;
+                        strut.EndColor = endColor;
+                        strut.StartSize = StartSize;
+                        strut.EndSize = EndSize;
 
-				lr.SetVertexCount(2);
-				lr.SetPosition(0, Vector3.zero);
-				lr.SetPosition(1, Vector3.zero);
-				lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-				lr.receiveShadows = true;
-			}
-		}
+                        Logging.PostDebugMessage(this, "Strut all done!");
+                    }
+                }
+            }
+        }
 
-		void DestroyLaser()
-		{
-			if (Util.isValid(lr))
-				LineRenderer.DestroyImmediate(lr);
+        void InitLaser()
+        {
+            if (!Util.isValid(lr))
+            {
+                lineObj = new GameObject();
 
-			if (Util.isValid(lineObj))
-				GameObject.DestroyImmediate(lineObj);
-		}
+                lr = lineObj.AddComponent<LineRenderer>();
+                lr.useWorldSpace = false;
 
-		public void DrawBuildOverlay()
-		{
-			if (Util.isValid(lr))
-			{
-				Vector3 dir = getTransform().TransformDirection(Dir);
-				Vector3 start = getTransform().TransformPoint(Start);
+                lr.material = material;
+                //lr.SetColors(startColor, endColor);
+                lr.startColor = startColor;
+                lr.endColor = endColor;
+                //lr.SetWidth(StartSize, EndSize);
+                lr.startWidth = StartSize;
+                lr.endWidth = EndSize;
+                //lr.SetVertexCount(2);
+                lr.positionCount = 2;
+                lr.SetPosition(0, Vector3.zero);
+                lr.SetPosition(1, Vector3.zero);
+                lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                lr.receiveShadows = true;
+            }
+        }
 
-				UnityEngine.RaycastHit info = new RaycastHit();
-				bool hit = Physics.Raycast(new UnityEngine.Ray(start + (dir * 0.05f), dir), out info, MaxStrutLength);
-				if (hit && IsEnabled)
-				{
-					if (Util.isValid(material))
-						lr.material = material;
+        void DestroyLaser()
+        {
+            if (Util.isValid(lr))
+                LineRenderer.DestroyImmediate(lr);
 
-					lr.SetColors(startColor, endColor);
-					lr.SetWidth(StartSize, EndSize);
+            if (Util.isValid(lineObj))
+                GameObject.DestroyImmediate(lineObj);
+        }
 
-					lr.SetPosition(0, start);
-					lr.SetPosition(1, info.point);
-				}
-				else
-				{
-					lr.material = LaserMaterial;
-					lr.SetColors(Color.red, Color.red);
-					lr.SetWidth(0.01f, 0.01f);
+        public void DrawBuildOverlay()
+        {
+            if (Util.isValid(lr))
+            {
+                Vector3 dir = getTransform().TransformDirection(Dir);
+                Vector3 start = getTransform().TransformPoint(Start);
 
-					lr.SetPosition(0, start);
-					lr.SetPosition(1, start + (dir * MaxStrutLength));
-				}
-			}
-		}
-	}
+                UnityEngine.RaycastHit info = new RaycastHit();
+                bool hit = Physics.Raycast(new UnityEngine.Ray(start + (dir * 0.05f), dir), out info, MaxStrutLength);
+                if (hit && IsEnabled)
+                {
+                    if (Util.isValid(material))
+                        lr.material = material;
+
+                    //lr.SetColors(startColor, endColor);
+                    lr.startColor = startColor;
+                    lr.endColor = endColor;
+                    //lr.SetWidth(StartSize, EndSize);
+                    lr.startWidth = StartSize;
+                    lr.endWidth = EndSize;
+                    lr.SetPosition(0, start);
+                    lr.SetPosition(1, info.point);
+                }
+                else
+                {
+                    lr.material = LaserMaterial;
+                    //lr.SetColors(Color.red, Color.red);
+                    lr.startColor = Color.red;
+                    lr.endColor = Color.red;
+                    //lr.SetWidth(0.01f, 0.01f);
+                    lr.startWidth = 0.01f;
+                    lr.endWidth = 0.01f;
+                    lr.SetPosition(0, start);
+                    lr.SetPosition(1, start + (dir * MaxStrutLength));
+                }
+            }
+        }
+    }
 }

@@ -59,7 +59,9 @@ namespace QuantumStrut
 			set
 			{
 				_startColor = value;
-				lr.SetColors(StartColor, EndColor);
+				//lr.SetColors(StartColor, EndColor);
+				lr.startColor = StartColor;
+				lr.endColor = EndColor;
 			}
 			get
 			{
@@ -74,9 +76,11 @@ namespace QuantumStrut
 			set
 			{
 				_endColor = value;
-				lr.SetColors(StartColor, EndColor);
-			}
-			get
+				// lr.SetColors(StartColor, EndColor);
+                lr.startColor = StartColor;
+                lr.endColor = EndColor;
+            }
+            get
 			{
 				return _endColor;
 			}
@@ -89,7 +93,9 @@ namespace QuantumStrut
 			set
 			{
 				_startSize = value;
-				lr.SetWidth(StartSize, EndSize);
+				//lr.SetWidth(StartSize, EndSize);
+				lr.startWidth = StartSize;
+				lr.endWidth = EndSize;
 			}
 			get
 			{
@@ -104,7 +110,9 @@ namespace QuantumStrut
 			set
 			{
 				_endSize = value;
-				lr.SetWidth(StartSize, EndSize);
+				//lr.SetWidth(StartSize, EndSize);
+				lr.startWidth = StartSize;
+				lr.endWidth = EndSize;
 			}
 			get
 			{
@@ -139,7 +147,7 @@ namespace QuantumStrut
 			}
 		}
 
-		public Strut(Part parent, Part target, Vector3 targetOffset, Transform parentTransform)
+		public Strut(Part parent, Part target, Vector3 targetOffset, Transform parentTransform, float customStrength = 1.0f, float customTorque = 1.0f)
 		{
 			this.parent = parent;
 			this.target = target;
@@ -167,6 +175,9 @@ namespace QuantumStrut
 				joint.angularYMotion = ConfigurableJointMotion.Locked;
 				joint.angularZMotion = ConfigurableJointMotion.Locked;
 
+				joint.breakForce *= customStrength;
+				joint.breakTorque *= customTorque;
+
 				LineObj = new GameObject();
 				LineObj.name = "quantumstrut";
 
@@ -179,7 +190,8 @@ namespace QuantumStrut
 				StartSize = 0.03f;
 				EndSize = 0.0075f;
 
-				lr.SetVertexCount(2);
+				//lr.SetVertexCount(2);
+				lr.positionCount = 2;
 				lr.SetPosition(0, Vector3.zero);
 				lr.SetPosition(1, Vector3.zero);
 			}
