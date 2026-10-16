@@ -157,6 +157,7 @@ namespace QuantumStrut
         {
             base.OnLoad(node);
             resourceID = PartResourceLibrary.Instance.GetDefinition("ElectricCharge").id;
+            Debug.Log("[QuantumStruts] OnLoad. resourceID: " + resourceID);
         }
 
         public override void OnActive()
@@ -227,8 +228,11 @@ namespace QuantumStrut
             {
                 var powerConsumption = PowerConsumption * strengthAdjustment * torqueAdjustment * TimeWarp.fixedDeltaTime;
 
-                int resourceID = PartResourceLibrary.Instance.GetDefinition("ElectricCharge").id;
-                double transferred = part.TransferResource(resourceID, powerConsumption);
+               // int resourceID = PartResourceLibrary.Instance.GetDefinition("ElectricCharge").id;
+                //double transferred =   part.TransferResource(resourceID, powerConsumption);
+
+                double transferred = part.RequestResource(resourceID, (double)powerConsumption);
+
 
                 if (powerConsumption == 0 || (Util.GetEnergy(part.vessel) > powerConsumption && powerConsumption == transferred))
                 {

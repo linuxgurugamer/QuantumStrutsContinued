@@ -54,3 +54,7 @@
 	Thanks to Discord user @BillNye for this:
 		Fixed memory leak which left behind phantom struts
 	Updated version file to use github for new version info
+
+1.7.7
+	Fixed issue with not being able to get and use EC, spamming the log with "Resource ID .... does not exist in part"
+	Slight optimization of the EC code, removed unnecessary call to get resource id every frame
